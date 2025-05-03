@@ -31,19 +31,23 @@ public class Tree {
         List<TreeEntry> entries = new ArrayList<>();
         ByteArrayInputStream byteArrInputStream = new ByteArrayInputStream(data);
 
+        ByteArrayOutputStream byteArrOut = new ByteArrayOutputStream();
+        int b;
+
+        // Read header first
+        while ((b = byteArrInputStream.read()) != -0) {
+            byteArrOut.write(b);
+        }
+
+        String header = byteArrOut.toString();
+        String headerType = header.substring(0, header.indexOf(" "));
+        int headerLength = Integer.parseInt(header.substring(header.indexOf(" ") + 1));
+
+
+        // Read rest until we reach end of OutPutStream
         while (byteArrInputStream.available() > 0) {
             ByteArrayOutputStream byteArrayOut = new ByteArrayOutputStream();
 
-
-            // Read header first
-            int b;
-            while ((b = byteArrInputStream.read()) != 0) {
-                byteArrayOut.write(b);
-            }
-
-            String header = byteArrayOut.toString();
-            String headerType = header.substring(0, header.indexOf(" "));
-            int headerLength = Integer.parseInt(header.substring(header.indexOf(" ") + 1));
 
             // Reset output string to write the rest
             byteArrayOut.reset();
