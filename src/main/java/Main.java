@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
+import java.util.Comparator;
+import java.util.List;
 
 
 public class Main {
@@ -85,6 +87,9 @@ public class Main {
             }
 
             case "hash-object" -> {
+                if (args.length < 3) {
+                    System.err.println("Usage: hash-object -w <file>");
+                }
 
                 String flag = args[1];
                 String fileDir = args[2];
@@ -97,9 +102,7 @@ public class Main {
                     System.err.println("No such git folder. Please initialise git with init or open a valid directory.");
                 }
 
-                if (args.length < 3) {
-                    System.err.println("Usage: hash-object -w <file>");
-                }
+
 
                 if (!flag.equals("-w")) {
                     System.err.println("Unsupported flag: " + flag);
@@ -154,6 +157,53 @@ public class Main {
                 // Print out hash
                 System.out.print(hashString);
 
+
+            }
+
+            case "ls-tree" -> {
+
+                if(args.length < 2 || args.length > 3) {
+                    System.err.println("Usage: ls-tree <optional flag> <object-sha>");
+                }
+
+                String flag;
+                String treeSha;
+
+                if (args.length == 2) {
+                    flag = args[0];
+                    treeSha = args[1];
+
+                }else {
+                    flag = args[1];
+                    treeSha = args[2];
+                    if(!flag.equals("--name-only")) {
+                        System.err.println("Unsupported flag: " + flag);
+                    }
+                }
+
+
+                Tree tree = new Tree();
+                List<TreeEntry> treeEntries = tree.readTree(treeSha);
+
+                treeEntries.sort(Comparator.comparing(treeEntry -> treeEntry.name));
+
+
+                if (args.length == 3) {
+
+                    for(TreeEntry entry : treeEntries) {
+
+                    System.out.print(entry.name);
+                    }
+
+                }else {
+                    for (TreeEntry entry : treeEntries) {
+                        System.out.print(entry.mode);
+                        System.out.print(" " + entry.headerType);
+                        System.out.print(" " + entry.toHexString(entry.sha));
+                        System.out.print("    " + entry.name + "\n");
+
+                    }
+                }
 
             }
 

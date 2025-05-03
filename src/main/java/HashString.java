@@ -1,11 +1,8 @@
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class HashString {
     public String encryptString(byte[] message, byte[] headerBytes) throws NoSuchAlgorithmException {
-
-
 
         byte[] digest;
         try {
