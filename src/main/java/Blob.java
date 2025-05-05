@@ -12,7 +12,6 @@ public class Blob extends ZLibCompression{
     private String blobHash;
 
 
-
     public String readBlob(String dir, String filename) throws IOException {
         File file = new File(".git/" + "objects/" + dir + "/" + filename);
 
@@ -63,9 +62,6 @@ public class Blob extends ZLibCompression{
         Path blobFolderPath = blobPath.resolve(blobFileName);
 
         compress(blobFolderPath, headerBytes, content);
-
-
-
 
     }
 

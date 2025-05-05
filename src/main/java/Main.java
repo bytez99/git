@@ -1,10 +1,6 @@
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.security.NoSuchAlgorithmException;
 import java.util.Comparator;
 import java.util.List;
 
@@ -99,7 +95,6 @@ public class Main {
                 String treeSha;
 
                 if (args.length == 2) {
-                    flag = args[0];
                     treeSha = args[1];
 
                 }else {
