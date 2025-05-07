@@ -45,8 +45,6 @@ public class Tree extends HashString {
 
         }
 
-
-
         byte[] treeContent = buildTreeContent(entries);
         String treeHeader =  "tree " + treeContent.length + "\0";
         byte[] treeHeaderBytes = treeHeader.getBytes(StandardCharsets.UTF_8);
@@ -54,23 +52,19 @@ public class Tree extends HashString {
 
         Path treePath = Paths.get(".git", "objects", treeHash.substring(0, 2));
         Files.createDirectories(treePath);
-
         Path completeTreePath = treePath.resolve(treeHash.substring(2));
-
 
         ZLibCompression compression = new ZLibCompression();
         compression.compress(completeTreePath, treeHeaderBytes, treeContent);
 
         return treeHash;
-
-
     }
 
     public String writeBlob(File file) throws IOException {
 
         String stringFile = file.toString();
-        Blob blob = new Blob();
 
+        Blob blob = new Blob();
         blob.createBlob(stringFile);
 
         return blob.getBlobHash();
@@ -94,9 +88,7 @@ public class Tree extends HashString {
         }
 
         ZLibCompression z = new ZLibCompression();
-
         byte[] treeBytes = z.decompress(file);
-
 
         return treeParser(treeBytes);
     }
@@ -108,25 +100,15 @@ public class Tree extends HashString {
         ByteArrayOutputStream byteArrOut = new ByteArrayOutputStream();
         int b;
 
-        // Read header first
+        // Skip first Header
         while ((b = byteArrInputStream.read()) != 0) {
             byteArrOut.write(b);
         }
-
-
-
-        String header = byteArrOut.toString();
-        String headerType = header.substring(0, header.indexOf(" "));
-        //int headerLength = Integer.parseInt(header.substring(header.indexOf(" ") + 1));
-
 
         // Read rest until we reach end of OutPutStream
         while (byteArrInputStream.available() > 0) {
             ByteArrayOutputStream byteArrayOut = new ByteArrayOutputStream();
 
-
-
-            // CHANGE - this will read our 20 byte hash.
             // Reset output string to write the rest
             byteArrayOut.reset();
             while ((b = byteArrInputStream.read()) != 0) {

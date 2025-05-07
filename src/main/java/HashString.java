@@ -35,6 +35,6 @@ public byte[] hexStringToByteArray(String hexString) {
         }
 
         return data;
-}
+    }
 
 }

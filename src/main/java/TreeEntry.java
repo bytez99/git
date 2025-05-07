@@ -1,5 +1,4 @@
 public class TreeEntry {
-    //private int headerSize;
     private String headerType;
     private String mode;
     private String name;
