@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Tree extends HashString {
+public class Tree {
+    public ZLibCompression libCompression = new ZLibCompression();
+    public HashString hash = new HashString();
 
 
     public byte[] buildTreeContent(List<TreeEntry> entries) throws IOException {
@@ -34,11 +36,11 @@ public class Tree extends HashString {
 
             if (file.isFile()){
                 String blobHash = writeBlob(file);
-                entries.add(new TreeEntry("100644", file.getName(), hexStringToByteArray(blobHash)));
+                entries.add(new TreeEntry("100644", file.getName(), hash.hexStringToByteArray(blobHash)));
 
             } else if (file.isDirectory() && !file.getName().equals(".git")) {
                 String treeHash = writeTree(file);
-                entries.add(new TreeEntry("40000", file.getName(), hexStringToByteArray(treeHash)));
+                entries.add(new TreeEntry("40000", file.getName(), hash.hexStringToByteArray(treeHash)));
 
 
             }
@@ -48,14 +50,13 @@ public class Tree extends HashString {
         byte[] treeContent = buildTreeContent(entries);
         String treeHeader =  "tree " + treeContent.length + "\0";
         byte[] treeHeaderBytes = treeHeader.getBytes(StandardCharsets.UTF_8);
-        String treeHash = hashByteToStringHex(treeContent, treeHeaderBytes);
+        String treeHash = hash.hashByteToStringHex(treeContent, treeHeaderBytes);
 
         Path treePath = Paths.get(".git", "objects", treeHash.substring(0, 2));
         Files.createDirectories(treePath);
         Path completeTreePath = treePath.resolve(treeHash.substring(2));
 
-        ZLibCompression compression = new ZLibCompression();
-        compression.compress(completeTreePath, treeHeaderBytes, treeContent);
+        libCompression.compress(completeTreePath, treeHeaderBytes, treeContent);
 
         return treeHash;
     }
@@ -87,8 +88,8 @@ public class Tree extends HashString {
             System.err.println("File does not exist: " + file.getAbsolutePath());
         }
 
-        ZLibCompression z = new ZLibCompression();
-        byte[] treeBytes = z.decompress(file);
+        //ZLibCompression z = new ZLibCompression();
+        byte[] treeBytes = libCompression.decompress(file);
 
         return treeParser(treeBytes);
     }

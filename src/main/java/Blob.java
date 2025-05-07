@@ -7,9 +7,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class Blob extends ZLibCompression{
+public class Blob {
     private String blobHash;
-
+    private ZLibCompression libCompression = new ZLibCompression();
+    private HashString hash = new HashString();
 
     public String readBlob(String dir, String filename) throws IOException {
         File file = new File(".git/" + "objects/" + dir + "/" + filename);
@@ -18,7 +19,7 @@ public class Blob extends ZLibCompression{
             System.err.println("File does not exist: " + file);
         }
 
-        byte[] objectDecompressed = decompress(file);
+        byte[] objectDecompressed = libCompression.decompress(file);
         ByteArrayInputStream byteArrInputStream = new ByteArrayInputStream(objectDecompressed);
 
         ByteArrayOutputStream byteArrOut = new ByteArrayOutputStream();
@@ -38,7 +39,7 @@ public class Blob extends ZLibCompression{
     }
 
     public void createBlob(String file) throws IOException {
-        HashString hashString = new HashString();
+
         byte[] content = null;
 
         try {
@@ -50,7 +51,7 @@ public class Blob extends ZLibCompression{
         String header = "blob " + content.length + "\0";
         byte[] headerBytes = header.getBytes(StandardCharsets.UTF_8);
 
-        setBlobHash(hashString.hashByteToStringHex(content, headerBytes));
+        setBlobHash(hash.hashByteToStringHex(content, headerBytes));
 
         String blobFolder = getBlobHash().substring(0, 2);
         String blobFileName = getBlobHash().substring(2);
@@ -60,7 +61,7 @@ public class Blob extends ZLibCompression{
 
         Path blobFolderPath = blobPath.resolve(blobFileName);
 
-        compress(blobFolderPath, headerBytes, content);
+        libCompression.compress(blobFolderPath, headerBytes, content);
 
     }
 
