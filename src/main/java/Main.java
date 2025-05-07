@@ -123,7 +123,7 @@ public class Main {
                     for (TreeEntry entry : treeEntries) {
                         System.out.print(entry.getMode());
                         System.out.print(" " + entry.getHeaderType());
-                        System.out.print(" " + entry.toHexString(entry.getSha()));
+                        System.out.print(" " + entry.toHexString(entry.getSha()).toLowerCase());
                         System.out.print("    " + entry.getName() + "\n");
 
                     }
@@ -134,7 +134,7 @@ public class Main {
             case "write-tree" -> {
 
                 Tree tree = new Tree();
-                tree.writeTree();
+                System.out.print(tree.createTree());
 
 
             }

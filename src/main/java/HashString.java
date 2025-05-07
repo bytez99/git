@@ -3,7 +3,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class HashString {
 
-    public String hashStringToHex(byte[] message, byte[] headerBytes) {
+    public String hashByteToStringHex(byte[] message, byte[] headerBytes) {
         byte[] digest;
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");

@@ -6,7 +6,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.NoSuchAlgorithmException;
 
 public class Blob extends ZLibCompression{
     private String blobHash;
@@ -38,7 +37,7 @@ public class Blob extends ZLibCompression{
 
     }
 
-    public void createBlob(String file) throws IOException, NoSuchAlgorithmException {
+    public void createBlob(String file) throws IOException {
         HashString hashString = new HashString();
         byte[] content = null;
 
@@ -48,10 +47,10 @@ public class Blob extends ZLibCompression{
             System.err.println("Error reading file: " + file + ": " + e.getMessage());
         }
 
-        String header = "blob " + file.length() + "\0";
+        String header = "blob " + content.length + "\0";
         byte[] headerBytes = header.getBytes(StandardCharsets.UTF_8);
 
-        setBlobHash(hashString.hashStringToHex(content, headerBytes));
+        setBlobHash(hashString.hashByteToStringHex(content, headerBytes));
 
         String blobFolder = getBlobHash().substring(0, 2);
         String blobFileName = getBlobHash().substring(2);
