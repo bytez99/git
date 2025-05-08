@@ -7,5 +7,5 @@ To do:
 3) Create bob object ✅
 4) Read tree object ✅
 5) Write tree object ✅
-6) Create a commit
+6) Create a commit ✅
 7) Clone a repository
