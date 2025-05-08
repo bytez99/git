@@ -139,6 +139,34 @@ public class Main {
 
             }
 
+            case "commit-tree" -> {
+                Commit commit = new Commit();
+
+                if (args.length < 4) {
+                    System.err.println("Usage: commit-tree <object-sha> -m <commit-message>");
+                }
+
+
+                String treeSha = args[1];
+                String commitMessage = args[3];
+
+                if (args.length > 6) {
+                    System.err.println("Too many arguments.");
+                }
+                if (args.length == 6) {
+                    String parentTreeSha = args[3];
+                    commitMessage = args[5];
+                    commit.buildCommitContent(treeSha, parentTreeSha, commitMessage);
+
+                }else {
+                    commit.buildInitialCommitContent(treeSha, commitMessage);
+                }
+
+                System.out.print(commit.getCommitHash());
+
+
+            }
+
 
             default -> System.out.println("Unknown command: " + command);
         }
