@@ -5,7 +5,7 @@ import java.util.zip.InflaterInputStream;
 
 public class ZLibCompression {
 
-    public byte[] decompress(File compressedFile) throws IOException {
+    public static byte[] decompress(File compressedFile) throws IOException {
         try(
                 FileInputStream fis = new FileInputStream(compressedFile);
                 InflaterInputStream iis = new InflaterInputStream(fis);
@@ -28,7 +28,7 @@ public class ZLibCompression {
 
     }
 
-    public void compress(Path blobFilePath, byte[] headerBytes, byte[] content ) throws IOException {
+    public static void compress(Path blobFilePath, byte[] headerBytes, byte[] content ) throws IOException {
         // Create our blob file with the path
         try (OutputStream fileOut = new FileOutputStream(blobFilePath.toFile());
              DeflaterOutputStream def = new DeflaterOutputStream(fileOut)) {

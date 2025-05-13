@@ -9,8 +9,6 @@ import java.nio.file.Paths;
 
 public class Blob {
     private String blobHash;
-    private ZLibCompression libCompression = new ZLibCompression();
-    private HashString hash = new HashString();
 
     public String readBlob(String dir, String filename) throws IOException {
         File file = new File(".git/" + "objects/" + dir + "/" + filename);
@@ -19,10 +17,12 @@ public class Blob {
             System.err.println("File does not exist: " + file);
         }
 
-        byte[] objectDecompressed = libCompression.decompress(file);
+        byte[] objectDecompressed = ZLibCompression.decompress(file);
         ByteArrayInputStream byteArrInputStream = new ByteArrayInputStream(objectDecompressed);
 
         ByteArrayOutputStream byteArrOut = new ByteArrayOutputStream();
+
+
 
         int b;
         while ((b = byteArrInputStream.read()) != -1) {
@@ -51,7 +51,7 @@ public class Blob {
         String header = "blob " + content.length + "\0";
         byte[] headerBytes = header.getBytes(StandardCharsets.UTF_8);
 
-        setBlobHash(hash.hashByteToStringHex(content, headerBytes));
+        setBlobHash(HashString.hashByteToStringHex(content, headerBytes));
 
         String blobFolder = getBlobHash().substring(0, 2);
         String blobFileName = getBlobHash().substring(2);
@@ -61,7 +61,7 @@ public class Blob {
 
         Path blobFolderPath = blobPath.resolve(blobFileName);
 
-        libCompression.compress(blobFolderPath, headerBytes, content);
+        ZLibCompression.compress(blobFolderPath, headerBytes, content);
 
     }
 

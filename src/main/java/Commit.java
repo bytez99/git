@@ -11,8 +11,6 @@ public class Commit {
     private final String committer = "committer";
     private final String committerEmail = "committer@email.com";
     private Instant time;
-    private ZLibCompression compression = new ZLibCompression();
-    private HashString hash = new HashString();
     private String commitHash;
 
 
@@ -53,7 +51,7 @@ public class Commit {
         byte[] headerBytes = header.getBytes();
         byte[] contentBytes = content.getBytes();
 
-        String commitHash = hash.hashByteToStringHex(contentBytes, headerBytes);
+        String commitHash = HashString.hashByteToStringHex(contentBytes, headerBytes);
 
         setCommitHash(commitHash);
 
@@ -67,7 +65,7 @@ public class Commit {
 
         Path objectPath = objectFile.toPath();
 
-        compression.compress(objectPath, headerBytes, contentBytes);
+        ZLibCompression.compress(objectPath, headerBytes, contentBytes);
 
     }
 

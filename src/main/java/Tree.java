@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class Tree {
-    public ZLibCompression libCompression = new ZLibCompression();
-    public HashString hash = new HashString();
 
 
     public byte[] buildTreeContent(List<TreeEntry> entries) throws IOException {
@@ -36,11 +34,11 @@ public class Tree {
 
             if (file.isFile()){
                 String blobHash = writeBlob(file);
-                entries.add(new TreeEntry("100644", file.getName(), hash.hexStringToByteArray(blobHash)));
+                entries.add(new TreeEntry("100644", file.getName(), HashString.hexStringToByteArray(blobHash)));
 
             } else if (file.isDirectory() && !file.getName().equals(".git")) {
                 String treeHash = writeTree(file);
-                entries.add(new TreeEntry("40000", file.getName(), hash.hexStringToByteArray(treeHash)));
+                entries.add(new TreeEntry("40000", file.getName(), HashString.hexStringToByteArray(treeHash)));
 
 
             }
@@ -50,13 +48,13 @@ public class Tree {
         byte[] treeContent = buildTreeContent(entries);
         String treeHeader =  "tree " + treeContent.length + "\0";
         byte[] treeHeaderBytes = treeHeader.getBytes(StandardCharsets.UTF_8);
-        String treeHash = hash.hashByteToStringHex(treeContent, treeHeaderBytes);
+        String treeHash = HashString.hashByteToStringHex(treeContent, treeHeaderBytes);
 
         Path treePath = Paths.get(".git", "objects", treeHash.substring(0, 2));
         Files.createDirectories(treePath);
         Path completeTreePath = treePath.resolve(treeHash.substring(2));
 
-        libCompression.compress(completeTreePath, treeHeaderBytes, treeContent);
+        ZLibCompression.compress(completeTreePath, treeHeaderBytes, treeContent);
 
         return treeHash;
     }
@@ -89,7 +87,7 @@ public class Tree {
         }
 
         //ZLibCompression z = new ZLibCompression();
-        byte[] treeBytes = libCompression.decompress(file);
+        byte[] treeBytes = ZLibCompression.decompress(file);
 
         return treeParser(treeBytes);
     }
@@ -106,11 +104,11 @@ public class Tree {
             byteArrOut.write(b);
         }
 
-        // Read rest until we reach end of OutPutStream
+        // Read the rest until we reach end of OutPutStream
         while (byteArrInputStream.available() > 0) {
             ByteArrayOutputStream byteArrayOut = new ByteArrayOutputStream();
 
-            // Reset output string to write the rest
+            // Reset the output string to write the rest
             byteArrayOut.reset();
             while ((b = byteArrInputStream.read()) != 0) {
                 byteArrayOut.write(b);
