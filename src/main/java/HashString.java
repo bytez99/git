@@ -25,6 +25,27 @@ public class HashString {
 
     }
 
+    public static String hashByteToStringHex(byte[] message) {
+        byte[] digest;
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
+            // Hash header and content
+            messageDigest.update(message);
+            digest = messageDigest.digest();
+
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (byte b : digest) {
+            stringBuilder.append(String.format("%02x", b));
+        }
+
+        return stringBuilder.toString();
+
+    }
+
 public static byte[] hexStringToByteArray(String hexString) {
         int len = hexString.length();
         byte[] data = new byte[len / 2];

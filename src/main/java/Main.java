@@ -167,6 +167,32 @@ public class Main {
 
             }
 
+            case "clone" ->{
+
+                if (args.length < 2) {
+                    System.err.println("Usage: clone <git-url> <dir-name>");
+                }
+
+                if (args.length == 2) {
+                    // Create clone in curr dir
+                }
+
+                if (args.length > 3) {
+                    System.err.println("Too many arguments. Usage: clone <git-url> <dir-name>");
+                }
+
+                String gitUrl = args[1];
+                String dirName = args[2];
+
+                Clone clone = new Clone();
+                clone.cloneRepo(gitUrl);
+                gitUrl = "test";
+
+
+
+
+            }
+
 
             default -> System.out.println("Unknown command: " + command);
         }
