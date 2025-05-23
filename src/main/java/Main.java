@@ -168,25 +168,20 @@ public class Main {
             }
 
             case "clone" ->{
-
+                Clone clone = new Clone();
                 if (args.length < 2) {
                     System.err.println("Usage: clone <git-url> <dir-name>");
                 }
 
                 if (args.length == 2) {
-                    // Create clone in curr dir
+                    clone.cloneRepo(args[1]);
                 }
 
                 if (args.length > 3) {
                     System.err.println("Too many arguments. Usage: clone <git-url> <dir-name>");
                 }
+                clone.cloneRepo(args[1], args[2]);
 
-                String gitUrl = args[1];
-                String dirName = args[2];
-
-                Clone clone = new Clone();
-                clone.cloneRepo(gitUrl);
-                gitUrl = "test";
 
 
 

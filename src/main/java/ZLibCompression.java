@@ -40,6 +40,18 @@ public class ZLibCompression {
     }
 
 
+    public static void compress(Path blobFilePath, byte[] content ) throws IOException {
+        // Create our blob file with the path
+        try (OutputStream fileOut = new FileOutputStream(blobFilePath.toFile());
+             DeflaterOutputStream def = new DeflaterOutputStream(fileOut)) {
+            // Compress our content
+            def.write(content);
+        }
+
+    }
+
+
+
     public static byte[] decompressNextZlibBlock(PushbackInputStream in) throws IOException {
         Inflater inflater = new Inflater();
         ByteArrayOutputStream out = new ByteArrayOutputStream();

@@ -6,6 +6,7 @@ public class ObjectEntry {
 
 
     // Delta Objects
+    private int actualType;
     private String baseSha1;
     private Long baseOffset;
 
@@ -19,53 +20,37 @@ public class ObjectEntry {
 
     }
 
-    // Ref Delta Objects
-    public ObjectEntry(int type, long size, byte[]data,  String baseSha1 ) {
+    // Ref Delta Objects Type 7
+    public ObjectEntry(int type, long size, byte[]data,  String baseSha1) {
         this(type, size, data);
         this.baseSha1 = baseSha1;
         this.isDelta = true;
     }
 
-    // Ofs Delta Objects
+    // Ofs Delta Objects Type 6
     public ObjectEntry(int type, long size, byte[]data,  Long baseOffset ) {
         this(type, size, data);
         this.baseOffset = baseOffset;
         this.isDelta = true;
     }
 
-    public boolean isDeltaObject() {
-        return type == 6 || type == 7;
-    }
-
-    public long getSize() {
-        return size;
-    }
-
-    public void setSize(long size) {
-        this.size = size;
-    }
-
     public byte[] getData() {
         return data;
-    }
-
-    public void setData(byte[] data) {
-        this.data = data;
     }
 
     public String getBaseSha1() {
         return baseSha1;
     }
 
-    public void setBaseSha1(String baseSha1) {
-        this.baseSha1 = baseSha1;
-    }
-
     public Long getBaseOffset() {
         return baseOffset;
     }
 
-    public void setBaseOffset(Long baseOffset) {
-        this.baseOffset = baseOffset;
+    public int getType() {
+        return type;
+    }
+
+    public void setActualType(int actualType) {
+        this.actualType = actualType;
     }
 }

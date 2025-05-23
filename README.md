@@ -8,4 +8,4 @@ To do:
 4) Read tree object ✅
 5) Write tree object ✅
 6) Create a commit ✅
-7) Clone a repository
+7) Clone a repository ✅

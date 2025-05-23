@@ -3,6 +3,7 @@ public class TreeEntry {
     private String mode;
     private String name;
     private byte[] sha;
+    private String shaHex;
 
     public TreeEntry(String mode, String headerType, String name, byte[] sha) {
         this.mode = mode;
@@ -17,6 +18,7 @@ public class TreeEntry {
         this.name = name;
         this.sha = sha;
     }
+
 
     public String toHexString(byte[] data) {
         StringBuilder hexString = new StringBuilder();
@@ -44,6 +46,10 @@ public class TreeEntry {
 
     public String getHeaderType() {
         return headerType;
+    }
+
+    public String getShaHex() {
+        return shaHex;
     }
 
 
